@@ -36,23 +36,23 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/users', async(req, res) => {
+  const users = await User.find()//get all user from the data base 
+  res.render('users/index.ejs', {users: users})
+})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.get('/users/show/:id', async(req,res) => {
+  try {
+    const user = await User.findById(req.params.id); // Fetch the user by ID
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    res.render('users/show.ejs', { user: user }); // Pass the user to the view
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+})
 
 app.get('/vip-lounge', (req, res) => {
   if (req.session.user) {

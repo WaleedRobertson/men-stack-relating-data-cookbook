@@ -36,10 +36,17 @@ app.get('/', (req, res) => {
   });
 });
 
+
+//missing code for users/foods to coordinate with error on page 
+
 app.get('/users', async(req, res) => {
   const users = await User.find()//get all user from the data base 
   res.render('users/index.ejs', {users: users})
 })
+
+// app.get('/users/:userid/foods', async(req, res) => {
+//   res.render('foods/index.ejs')
+// })
 
 app.get('/users/show/:id', async(req,res) => {
   try {
@@ -54,6 +61,8 @@ app.get('/users/show/:id', async(req,res) => {
   }
 })
 
+
+
 app.get('/vip-lounge', (req, res) => {
   if (req.session.user) {
     res.send(`Welcome to the party ${req.session.user.username}.`);
@@ -65,7 +74,7 @@ app.get('/vip-lounge', (req, res) => {
 app.use(passUserToView)
 app.use('/auth', authController);
 app.use(isSignedIn);
-app.use('/users/:userId/foods',foodsController);
+app.use('/users/:userId/foods', foodsController);
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);

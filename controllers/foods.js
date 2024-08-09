@@ -18,19 +18,25 @@ router.get('/new', async(req,res) => {
   res.render('new.ejs')
 })
 
-router.post('/', async(req, res) => {
-  try{
-    const currentUser = await User.findById(req.session.user._id)
-    //since the form name is food 
-    currentUser.pantry.push(req.body)
-    await currentUser.save()
-    res.redirect(`/users/${currentUser}/foods`)
-}
-  catch(error){
-    console.log(error)
-    res.redirect('/')
+router.post('/', async (req, res) => {
+  try {
+    // Find the currently logged-in user by their ID stored in the session
+    const currentUser = await User.findById(req.session.user._id);
+
+    // Add the new food item to the user's pantry
+    currentUser.pantry.push(req.body);
+
+    // Save the updated user document to the database
+    await currentUser.save();
+
+    // Redirect to the user's foods page, passing the user's ID in the URL
+    res.redirect(`/users/${currentUser._id}/foods`);
+  } catch (error) {
+    // Log any errors and redirect back to the home page
+    console.log(error);
+    res.redirect('/');
   }
-})
+});
 
 router.get('/:itemId', async (req, res) => {
   try {

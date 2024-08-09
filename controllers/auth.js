@@ -25,7 +25,7 @@ router.post('/sign-up', async (req, res) => {
       return res.send('Username already taken.');
     }
   
-    // Username is not taken already!
+    // This is the line of code that verifies if the username is taken
     // Check if the password and confirm password match
     if (req.body.password !== req.body.confirmPassword) {
       return res.send('Password and Confirm Password must match');
@@ -47,7 +47,7 @@ router.post('/sign-up', async (req, res) => {
 
 router.post('/sign-in', async (req, res) => {
   try {
-    // First, get the user from the database
+    // First get the user from the database 
     const userInDatabase = await User.findOne({ username: req.body.username });
     if (!userInDatabase) {
       return res.send('Login failed. Please try again.');
